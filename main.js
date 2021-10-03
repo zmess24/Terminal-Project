@@ -1,38 +1,50 @@
 console.log("JS Loaded");
 
 // Global Varialbes
+
 let command = '', commandHistory = [];
 
 const commandMap = { 
     help: {
-        desc: 'Displays list of all commands',
+        desc: 'Display list of all available commands',
         execute: help
     },
     clear: {
-        desc: 'Clears the command line of previous commands',
+        desc: 'Clear the command line of previous commands',
         execute: clear
     },
     history: {
-        desc: 'Shows history of commands entered',
+        desc: 'Show history of all previous commands entered',
         execute: history
     },
 };
 
 // Command Map Functions
-function help() {
-    var commands = Object.keys(commandMap).sort();
-    commands.forEach(c => createResultLine(`${c}: ${commandMap[c].desc}`));
-}
 
 function clear() {
     document.querySelector('ul').innerHTML = '';
 }
 
+function help() {
+    var commands = Object.keys(commandMap).sort();
+    createResultLine('Available Commands:');
+    let table = document.createElement('table');
+    commands.forEach(c => { 
+        let row = createTableRow(c, commandMap[c].desc);
+        table.append(row);
+    });
+
+    console.log(table)
+    createResultLine(table);
+}
+
 function history() {
+    let table = document.createElement('table');
     commandHistory.forEach((c, i) => createResultLine(`${i+1}: ${c}`));
 }
 
 // Helper Functions
+
 function createNewPrompt() {
     let li = document.createElement('li');
     command = '';
@@ -42,9 +54,24 @@ function createNewPrompt() {
 
 function createResultLine(line) {
     let li = document.createElement('li');
-    li.innerText = line;
+    li.append(line);
     document.querySelector('ul').appendChild(li);
-} 
+}
+
+function createTableCol(data) {
+    let td = document.createElement('td');
+    td.innerText = data;
+    return td;
+}
+
+function createTableRow(colOne, colTwo) {
+    let row = document.createElement('tr');
+    let tdOne = createTableCol(colOne);
+    let tdTwo = createTableCol(colTwo);
+    row.append(tdOne);
+    row.append(tdTwo);
+    return row;
+}
 
 function appendCommand(character) {
     let currentLine = document.querySelector('li:last-child .command')
@@ -78,8 +105,9 @@ document.addEventListener("DOMContentLoaded", () => {
     createNewPrompt();
 
     document.addEventListener('keydown', ({ key, code }) => {
+        // console.log(key)
         if (code === "Enter") executeCommand();
-        if (code === 'Space') appendCommand(' ');
+        if (code === 'Space')   (' ');
         if (code === "Backspace") appendCommand('backspace');
         if (code.indexOf('Key') > -1) appendCommand(key);
     });
