@@ -1,4 +1,10 @@
-main {
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.prompt {
     color: red;
     font-family: Arial, Helvetica, sans-serif;
 }
