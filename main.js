@@ -1,53 +1,57 @@
 console.log("JS Loaded");
 
+// Global Varialbes
+let command = '';
+
+const commandMap = { 
+    ls: {},
+    help: {},
+    clear: {}
+};
+
+// Helper Functions
+function createNewLine() {
+    let li = document.createElement('li');
+    command = '';
+    li.innerHTML = `<span class="prompt">[zacharymessinger] </span><span class="command">${command}</span><div class="pointer"></div>`;
+    document.querySelector('ul').appendChild(li);
+};
+
+function appendCurrentLine(character) {
+    let currentLine = document.querySelector('li:last-child .command')
+    command = character === 'backspace' ? command.slice(0, command.length-1) : command + character;
+    currentLine.innerText = command;
+};
+
+function commandNotFound() {
+    let li = document.createElement('li');
+    li.innerText = `-bash: ${command}: command not found`
+    document.querySelector('ul').appendChild(li);
+    createNewLine();
+};
+
+function commandFound(command) {
+    console.log(`${command} Found`);
+};
+
+function execute() {
+    let currentLine = document.querySelector('li:last-child');
+    let pointer = document.querySelector('li:last-child .pointer');
+    currentLine.removeChild(pointer);
+    commandMap[command] ? commandFound(command) : commandNotFound();
+};
+
 /**
- * Helper Functions + Global Variables
+ * Main Script
  */
 
 document.addEventListener("DOMContentLoaded", () => {
-    let 
-        currentString = '',
-        result = '';
-
-    const commandMap = { 
-        ls: 'Found LS',
-        help: {}
-    };
-
-    function createNewLine() {
-        let li = document.createElement('li');
-        currentString = '';
-        li.innerHTML = `<span class="prompt">[zacharymessinger] </span><span class="command">${currentString}</span><div class="pointer"></div>`;
-        document.querySelector('ul').appendChild(li);
-    };
-
-    function searchCommandMap() {
-        let currentLine = document.querySelector('li:last-child');
-        let pointer = document.querySelector('li:last-child .pointer');
-        currentLine.removeChild(pointer);
-
-        if (commandMap[currentString]) {
-            console.log('found')
-        } else {
-            let li = document.createElement('li');
-            li.innerText = `-bash: ${currentString}: command not found`
-            document.querySelector('ul').appendChild(li);
-            createNewLine();
-        };
-    };
-
-    function appendCurrentLine(value) {
-        let currentLine = document.querySelector('li:last-child .command')
-        currentString = value === 'backspace' ? currentString.slice(0, currentString.length-1) : currentString + value;
-        currentLine.innerText = currentString;
-    };
+    createNewLine();
 
     document.addEventListener('keydown', ({ key, code }) => {
-        if (code === "Enter") searchCommandMap();
+        if (code === "Enter") execute();
         if (code === 'Space') appendCurrentLine(' ');
         if (code === "Backspace") appendCurrentLine('backspace');
         if (code.indexOf('Key') > -1) appendCurrentLine(key);
     });
-
-    createNewLine()
 });
