@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function createNewLine() {
         let li = document.createElement('li');
         currentString = '';
-        li.innerHTML = `<span class="prompt">[zacharymessinger] </span><span class="command">${currentString}</span><span class="pointer">_</span>`;
+        li.innerHTML = `<span class="prompt">[zacharymessinger] </span><span class="command">${currentString}</span><div class="pointer"></div>`;
         document.querySelector('ul').appendChild(li);
     };
 

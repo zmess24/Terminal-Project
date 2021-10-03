@@ -14,3 +14,32 @@ ul {
 .prompt {
     color: red;
 }
+
+li {
+    position: relative;
+    /* background-color: black; */
+}
+
+.pointer {
+    display: inline-block;
+}
+
+.command {
+    display: inline-block;
+}
+
+.pointer {
+    background-color: white;
+    height: 1rem;
+    width: 5px;
+    position: absolute;
+    bottom: 0;
+    display: inline-block;
+    animation: blink 0.7s linear infinite;
+}
+
+@keyframes blink {
+    0% {
+      opacity: 0;
+    }
+}
