@@ -2,7 +2,7 @@ console.log("JS Loaded");
 
 // Global Varialbes
 
-let command = '', commandHistory = [];
+let command = '', commandHistory = [], locationMap = {"~": {".bash_profile": {}, Zac: {}}}, currentDiretory = "~";
 
 const commandMap = { 
     help: {
@@ -17,6 +17,22 @@ const commandMap = {
         desc: 'Show history of all previous commands entered',
         execute: history
     },
+    ls: { 
+        desc: "List contents of current working directory",
+        execute: ls
+    },
+    mkdir: { 
+        desc: "Make a new directory",
+        execute: mkdir
+    },
+    cd: {
+        desc: "Change current directory",
+        execute: cd
+    },
+    pwd: {
+        desc: "Print working directory",
+        // execute: pwd
+    }
 };
 
 // Command Map Functions
@@ -46,6 +62,28 @@ function history() {
 
     createResultLine(table);
 }
+
+function ls() {
+    debugger
+    let map = currentDiretory;
+    let files = Object.keys(locationMap[map]).sort();
+    let results = files.toString().replaceAll(',', '     ')
+    createResultLine(results);
+};
+
+function mkdir(directory) {
+    
+    let map = currentDiretory;
+
+};
+
+function cd(path) {
+    if (locationMap[currentDiretory][path]) { 
+        currentDiretory = `${currentDiretory}/${path}`;
+    } else {
+        commandNotFound(`cd: ${path}: No such file or directory`)
+    }
+};
 
 // Helper Functions
 
@@ -84,21 +122,22 @@ function appendCommand(character) {
     currentLine.innerText = command;
 };
 
-function commandNotFound() {
-    let message = `-bash: ${command}: command not found`;
+function commandNotFound(string) {
+    let message = `-bash: ${string}`;
     createResultLine(message);
 };
 
-function commandFound(command) {
-    commandMap[command].execute()
+function commandFound(command, arg) {
+    commandMap[command].execute(arg)
 };
 
 function executeCommand() {
     let currentLine = document.querySelector('li:last-child');
     let pointer = document.querySelector('li:last-child .pointer');
     currentLine.removeChild(pointer);
-    commandHistory.push(command);
-    commandMap[command] ? commandFound(command) : commandNotFound();
+    let [func, arg] = command.split(' ');
+    commandHistory.push(func);
+    commandMap[func] ? commandFound(func, arg) : commandNotFound(`${func}: command not found`);
     createNewPrompt();
 };
 
@@ -112,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener('keydown', ({ key, code }) => {
         // console.log(key)
         if (code === "Enter") executeCommand();
-        if (code === 'Space')   (' ');
+        if (code === 'Space') appendCommand(' ');
         if (code === "Backspace") appendCommand('backspace');
         if (code.indexOf('Key') > -1) appendCommand(key);
     });
