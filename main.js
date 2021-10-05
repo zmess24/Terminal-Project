@@ -30,17 +30,21 @@ function help() {
     createResultLine('Available Commands:');
     let table = document.createElement('table');
     commands.forEach(c => { 
-        let row = createTableRow(c, commandMap[c].desc);
+        let row = createTableRow(c, commandMap[c].desc, "100px");
         table.append(row);
     });
 
-    console.log(table)
     createResultLine(table);
 }
 
 function history() {
     let table = document.createElement('table');
-    commandHistory.forEach((c, i) => createResultLine(`${i+1}: ${c}`));
+    commandHistory.forEach((c, i) => {
+        let row = createTableRow(i+1, c, "25px");
+        table.append(row);
+    });
+
+    createResultLine(table);
 }
 
 // Helper Functions
@@ -64,10 +68,11 @@ function createTableCol(data) {
     return td;
 }
 
-function createTableRow(colOne, colTwo) {
+function createTableRow(colOne, colTwo, width = null) {
     let row = document.createElement('tr');
     let tdOne = createTableCol(colOne);
     let tdTwo = createTableCol(colTwo);
+    if (width) tdOne.style.width = width;
     row.append(tdOne);
     row.append(tdTwo);
     return row;
