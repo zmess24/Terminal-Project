@@ -1,4 +1,4 @@
-console.log("JS Loaded");
+console.log("JS Loaded 6");
 
 // Global Varialbes
 
