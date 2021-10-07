@@ -1,0 +1,17 @@
+{
+  "name": "terminal",
+  "version": "1.0.0",
+  "description": "Terminal Project for fun.",
+  "main": "main.js",
+  "author": "",
+  "scripts": {
+    "build": "webpack --config webpack.config.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "webpack": "^5.57.1"
+  },
+  "devDependencies": {
+    "webpack-cli": "^4.9.0"
+  }
+}

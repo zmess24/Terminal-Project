@@ -64,17 +64,16 @@ function history() {
 }
 
 function ls() {
-    debugger
-    let map = currentDiretory;
-    let files = Object.keys(locationMap[map]).sort();
+    let map = currentDiretory.split('/');
+    let evalString = map.reduce((prev, curr, i) => { return prev + `map[${i}]` }, "")
+    debugger;
+    let files = eval(`Object.keys(locationMap[${evalString}]).sort()`);
     let results = files.toString().replaceAll(',', '     ')
     createResultLine(results);
 };
 
 function mkdir(directory) {
-    
     let map = currentDiretory;
-
 };
 
 function cd(path) {
