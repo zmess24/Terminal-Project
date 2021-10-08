@@ -1,8 +1,14 @@
-console.log("JS Loaded 6");
+console.log("JS Loaded");
+import { File } from './File';
+import { FileSystem } from './FileSystem'
 
 // Global Varialbes
+let command = '', commandHistory = [];
 
-let command = '', commandHistory = [], locationMap = {"~": {".bash_profile": {}, Zac: {}}}, currentDiretory = "~";
+const map = new FileSystem();
+map.add(new File('Zac', "~", true));
+map.add(new File('.bash_profile', '~'));
+console.log(map.directory)
 
 const commandMap = { 
     help: {
@@ -64,24 +70,18 @@ function history() {
 }
 
 function ls() {
-    let map = currentDiretory.split('/');
-    let evalString = map.reduce((prev, curr, i) => { return prev + `map[${i}]` }, "")
-    debugger;
-    let files = eval(`Object.keys(locationMap[${evalString}]).sort()`);
-    let results = files.toString().replaceAll(',', '     ')
+    let results = map.currentDir.content.reduce((prev, curr) => { return `${prev} ${curr.name}` }, '')
     createResultLine(results);
 };
 
-function mkdir(directory) {
-    let map = currentDiretory;
+function mkdir(name) {
+    let file = new File(name, map.currentPath, true);
+    map.add(file);
 };
 
-function cd(path) {
-    if (locationMap[currentDiretory][path]) { 
-        currentDiretory = `${currentDiretory}/${path}`;
-    } else {
-        commandNotFound(`cd: ${path}: No such file or directory`)
-    }
+function cd(dir) {
+    let found = map.currentDir.content.find(d => d.name === dir);
+    found ? map.changeDir(found) : commandNotFound(`cd: ${dir}: No such file or directory`);
 };
 
 // Helper Functions
