@@ -80,6 +80,7 @@ function mkdir(name) {
 };
 
 function cd(dir) {
+    debugger;
     let found = map.currentDir.content.find(d => d.name === dir);
     found ? map.changeDir(found) : commandNotFound(`cd: ${dir}: No such file or directory`);
 };
@@ -117,8 +118,10 @@ function createTableRow(colOne, colTwo, width = null) {
 
 function appendCommand(character) {
     let currentLine = document.querySelector('li:last-child .command')
+    debugger;
     command = character === 'backspace' ? command.slice(0, command.length-1) : command + character;
-    currentLine.innerText = command;
+    debugger;
+    currentLine.textContent = command;
 };
 
 function commandNotFound(string) {
@@ -148,10 +151,10 @@ document.addEventListener("DOMContentLoaded", () => {
     createNewPrompt();
 
     document.addEventListener('keydown', ({ key, code }) => {
-        // console.log(key)
         if (code === "Enter") executeCommand();
-        if (code === 'Space') appendCommand(' ');
+        if (code === 'Space') appendCommand(key);
         if (code === "Backspace") appendCommand('backspace');
-        if (code.indexOf('Key') > -1) appendCommand(key);
+        debugger;
+        if (key.match(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/) && key.length === 1) appendCommand(key);
     });
 });
