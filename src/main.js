@@ -8,7 +8,7 @@ let command = '', commandHistory = [];
 const map = new FileSystem();
 map.add(new File('Zac', "~", true));
 map.add(new File('.bash_profile', '~'));
-console.log(map.directory)
+console.log(map.directory);
 
 const commandMap = { 
     help: {
@@ -89,7 +89,7 @@ function cd(dir) {
 function createNewPrompt() {
     let li = document.createElement('li');
     command = '';
-    li.innerHTML = `<span class="prompt">[zacharymessinger] </span><span class="command">${command}</span><div class="pointer"></div>`;
+    li.innerHTML = `<span class="prompt">[zacharymessinger] <span class="currentPath">${map.currentPath}</span> </span><span class="command">${command}</span> <div class="pointer"></div>`;
     document.querySelector('ul').appendChild(li);
 };
 

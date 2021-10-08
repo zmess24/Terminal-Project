@@ -10,7 +10,6 @@ class FileSystem {
         if (this.currentPath === "~") {
             this.content.push(file);
         } else {
-            debugger;
             this.currentDir.addDir(file);
         }
     };

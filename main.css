@@ -24,6 +24,11 @@ li {
     display: inline-block;
 }
 
+.currentPath {
+    display: inline-block;
+    color: yellow;
+}
+
 .command {
     display: inline-block;
 }
