@@ -15,6 +15,7 @@ class FileSystem {
     };
 
     changeDir(dir) {
+        debugger;
         this.currentDir = dir;
         this.currentPath = `${dir.parentDirectory}/${dir.name}`;
     }

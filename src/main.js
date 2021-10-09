@@ -155,6 +155,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (code === 'Space') appendCommand(key);
         if (code === "Backspace") appendCommand('backspace');
         debugger;
-        if (key.match(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/) && key.length === 1) appendCommand(key);
+        if (key.match(/\W|_|[0-9]|[[a-zA-Z]/g) && key.length === 1) appendCommand(key);
     });
 });
