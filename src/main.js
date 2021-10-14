@@ -3,11 +3,11 @@ import { File } from './File';
 import { FileSystem } from './FileSystem'
 
 // Global Varialbes
-let command = '', commandHistory = [], currentPath = "~", currentDir = null;
+let command = '', commandHistory = [];
 
 const map = new FileSystem();
-map.add(new File('Zac', "~", true));
-map.add(new File('.bash_profile', '~'));
+map.add(new File('Zac', map.currentDir, "~", true));
+map.add(new File('.bash_profile', map.currentDir, '~'));
 console.log(map.directory);
 
 const commandMap = { 
@@ -75,14 +75,17 @@ function ls() {
 };
 
 function mkdir(name) {
-    let file = new File(name, map.currentPath, true);
+    let file = new File(name, map.currentDir, map.currentPath, true);
     map.add(file);
 };
 
 function cd(dir) {
-    debugger;
-    let found = map.currentDir.content.find(d => d.name === dir);
-    found ? map.changeDir(found) : commandNotFound(`cd: ${dir}: No such file or directory`);
+    try {
+        map.changeDir(dir)
+    } catch (err) {
+        console.log(err, err.message)
+        throwError(err.message)
+    }
 };
 
 // Helper Functions
@@ -122,7 +125,7 @@ function appendCommand(key) {
     currentLine.textContent = command;
 };
 
-function commandNotFound(string) {
+function throwError(string) {
     let message = `-bash: ${string}`;
     createResultLine(message);
 };
@@ -139,7 +142,7 @@ function executeCommand() {
     // Execute Commmand
     let [func, arg] = command.split(' ');
     commandHistory.push(func);
-    commandMap[func] ? commandFound(func, arg) : commandNotFound(`${func}: command not found`);
+    commandMap[func] ? commandFound(func, arg) : throwError(`${func}: command not found`);
     createNewPrompt();
 };
 
