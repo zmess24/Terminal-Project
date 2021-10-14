@@ -3,7 +3,7 @@ import { File } from './File';
 import { FileSystem } from './FileSystem'
 
 // Global Varialbes
-let command = '', commandHistory = [];
+let command = '', commandHistory = [], currentPath = "~", currentDir = null;
 
 const map = new FileSystem();
 map.add(new File('Zac', "~", true));
@@ -116,11 +116,9 @@ function createTableRow(colOne, colTwo, width = null) {
     return row;
 }
 
-function appendCommand(character) {
+function appendCommand(key) {
     let currentLine = document.querySelector('li:last-child .command')
-    debugger;
-    command = character === 'backspace' ? command.slice(0, command.length-1) : command + character;
-    debugger;
+    command = key === 'backspace' ? command.slice(0, command.length-1) : command + key;
     currentLine.textContent = command;
 };
 
@@ -134,9 +132,11 @@ function commandFound(command, arg) {
 };
 
 function executeCommand() {
+    // Remove cursor from current line
     let currentLine = document.querySelector('li:last-child');
     let pointer = document.querySelector('li:last-child .pointer');
     currentLine.removeChild(pointer);
+    // Execute Commmand
     let [func, arg] = command.split(' ');
     commandHistory.push(func);
     commandMap[func] ? commandFound(func, arg) : commandNotFound(`${func}: command not found`);
@@ -152,9 +152,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.addEventListener('keydown', ({ key, code }) => {
         if (code === "Enter") executeCommand();
-        if (code === 'Space') appendCommand(key);
         if (code === "Backspace") appendCommand('backspace');
-        debugger;
-        if (key.match(/\W|_|[0-9]|[[a-zA-Z]/g) && key.length === 1) appendCommand(key);
+        // if (key.match(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/) && key.length === 1) appendCommand(key);
+        if (key.match(/\W|_|[0-9]|[[a-zA-Z]/) && key.length === 1) appendCommand(key);
     });
 });
