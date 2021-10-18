@@ -38,7 +38,7 @@ const commandMap = {
   },
   pwd: {
     desc: "Print working directory",
-    // execute: pwd
+    execute: pwd
   },
 };
 
@@ -91,6 +91,10 @@ function cd(absolutePath) {
     } catch (err) {
         throwError(err.message);
     }
+};
+
+function pwd() {
+    createResultLine(map.currentPath)
 }
 
 // Helper Functions
