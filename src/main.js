@@ -147,7 +147,7 @@ function executeCommand() {
   currentLine.removeChild(pointer);
   // Execute Commmand
   let [func, arg] = command.split(" ");
-  commandHistory.push(func);
+  commandHistory.push(command);
   commandMap[func]
     ? commandFound(func, arg)
     : throwError(`${func}: command not found`);
