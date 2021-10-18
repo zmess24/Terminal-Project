@@ -36,6 +36,15 @@ const commandMap = {
     desc: "Change current directory",
     execute: cd,
   },
+  rm: {
+    desc: "Removes file from a directory",
+  },
+  cp: {
+    desc: "Copies file a directory",
+  },
+  mv: {
+    desc: "Moves file into a directory",
+  },
   pwd: {
     desc: "Print working directory",
     execute: pwd
@@ -45,42 +54,43 @@ const commandMap = {
 // Command Map Functions
 
 function clear() {
-  document.querySelector("ul").innerHTML = "";
+    document.querySelector("ul").innerHTML = "";
 }
 
 function help() {
-  var commands = Object.keys(commandMap).sort();
-  createResultLine("Available Commands:");
-  let table = document.createElement("table");
-  commands.forEach((c) => {
-    let row = createTableRow(c, commandMap[c].desc, "100px");
-    table.append(row);
-  });
+    var commands = Object.keys(commandMap).sort();
+    createResultLine("Available Commands:");
+    let table = document.createElement("table");
+    commands.forEach((c) => {
+        let row = createTableRow(c, commandMap[c].desc, "100px");
+        table.append(row);
+    });
 
-  createResultLine(table);
-}
+    createResultLine(table);
+    }
 
-function history() {
-  let table = document.createElement("table");
-  commandHistory.forEach((c, i) => {
-    let row = createTableRow(i + 1, c, "25px");
-    table.append(row);
-  });
+    function history() {
+    let table = document.createElement("table");
+    commandHistory.forEach((c, i) => {
+        let row = createTableRow(i + 1, c, "25px");
+        table.append(row);
+    });
 
-  createResultLine(table);
+    createResultLine(table);
 }
 
 function ls() {
   let results = map.currentDir.content.reduce((prev, curr) => {
-    return `${prev} ${curr.name}`;
-  }, "");
-  createResultLine(results);
+        return `${prev} ${curr.name}`;
+    }, "");
+    createResultLine(results);
 }
 
 function mkdir(name) {
-  let file = new File(name, map.currentDir, map.currentPath, true);
-  map.add(file);
-}
+    debugger;
+    let file = new File(name, map.currentDir, map.currentPath, true);
+    map.add(file);
+};
 
 function cd(absolutePath) {
     let pathArray = absolutePath.split("/").filter((e) => e !== "");
@@ -95,7 +105,7 @@ function cd(absolutePath) {
 
 function pwd() {
     createResultLine(map.currentPath)
-}
+};
 
 // Helper Functions
 
