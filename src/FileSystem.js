@@ -19,27 +19,34 @@ class FileSystem {
         }
     };
 
-    updatePathAndDir(dir, path = false) {
+    updatePathAndCurrentDir(dir) {
         this.currentDir = dir;
-        debugger;
-        this.currentPath = path ? path : `${dir.absolutePath}/${dir.name}`;
+        this.currentPath = dir.name === "~" ? "~" : `${dir.absolutePath}/${dir.name}`;
     }
 
-    changeDir(dir) {
-        let path = dir.split('/').filter(e => e !== '')
-
-        if (path.length === 1) {
-            if (path[0] === "~") {
-                this.updatePathAndDir(this, "~")
-            } else if (path[0] === "..") {
-                this.currentDir.parentDirectory ? this.updatePathAndDir(this.currentDir.parentDirectory) : this.handleError(`cd ${dir}: End of file system`);
+    changeDir(pathArray, currentDir, absolutePath, firstIteration) {
+        currentDir = currentDir ? currentDir : this.currentDir;
+        debugger;
+        if (pathArray[0] === "~") {
+            currentDir = this;
+        } else if (pathArray[0] === "..") {
+            if (this.currentDir.parentDirectory && this.currentDir.name !== "~") {
+                currentDir = currentDir.parentDirectory
             } else {
-                let file = this.currentDir.content.find(d => d.name === path[0]);
-                file ? this.updatePathAndDir(file) : this.handleError(`cd ${dir}: No such file or directory`);
+                this.handleError(`cd ${absolutePath}: End of file system`);
             }
         } else {
+            let file = currentDir.content.find(d => d.name === pathArray[0]);
             debugger;
+            if (file) {
+                currentDir = file
+            } else {
+                this.handleError(`cd ${absolutePath}: No such file or directory`);
+            } 
         }
+        debugger;
+        pathArray.shift();
+        return pathArray.length > 0 ? this.changeDir(pathArray, currentDir, absolutePath) : this.updatePathAndCurrentDir(currentDir);
     }
 }
 
