@@ -26,17 +26,18 @@ class FileSystem {
 
     changeDir(pathArray, currentDir, absolutePath) {
         currentDir = currentDir ? currentDir : this.currentDir;
+        
         if (pathArray[0] === "~") {
             currentDir = this;
         } else if (pathArray[0] === "..") {
-            debugger;
             currentDir.parentDirectory && currentDir.name !== "~"
                 ? currentDir = currentDir.parentDirectory
                 : this.handleError(`cd ${absolutePath}: End of file system`);
         } else {
             let file = currentDir.content.find(d => d.name === pathArray[0]);
             file ? currentDir = file : this.handleError(`cd ${absolutePath}: No such file or directory`);
-        }
+        };
+
         pathArray.shift();
         return pathArray.length > 0 ? this.changeDir(pathArray, currentDir, absolutePath) : this.updatePathAndCurrentDir(currentDir);
     }

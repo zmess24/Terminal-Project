@@ -126,8 +126,7 @@ function createTableRow(colOne, colTwo, width = null) {
 
 function appendCommand(key) {
   let currentLine = document.querySelector("li:last-child .command");
-  command =
-    key === "backspace" ? command.slice(0, command.length - 1) : command + key;
+  command = key === "backspace" ? command.slice(0, command.length - 1) : command + key;
   currentLine.textContent = command;
 }
 
@@ -164,8 +163,6 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("keydown", ({ key, code }) => {
     if (code === "Enter") executeCommand();
     if (code === "Backspace") appendCommand("backspace");
-    // if (key.match(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/) && key.length === 1) appendCommand(key);
-    if (key.match(/\W|_|[0-9]|[[a-zA-Z]/) && key.length === 1)
-      appendCommand(key);
+    if (key.match(/\W|_|[0-9]|[[a-zA-Z]/) && key.length === 1) appendCommand(key);
   });
 });
