@@ -7,8 +7,8 @@ let command = "",
   commandHistory = [];
 
 const map = new FileSystem();
-map.add(new File("Zac", map.currentDir, "~", true));
-map.add(new File(".bash_profile", map.currentDir, "~"));
+map.addDir("~/Zac");
+map.addDir("/.bash_profile");
 console.log(map.directory);
 
 const commandMap = {
@@ -67,9 +67,9 @@ function help() {
     });
 
     createResultLine(table);
-    }
+}
 
-    function history() {
+function history() {
     let table = document.createElement("table");
     commandHistory.forEach((c, i) => {
         let row = createTableRow(i + 1, c, "25px");
@@ -86,18 +86,17 @@ function ls() {
     createResultLine(results);
 }
 
-function mkdir(name) {
-    debugger;
-    let file = new File(name, map.currentDir, map.currentPath, true);
-    map.add(file);
+function mkdir(directories) {
+    try {
+        directories.forEach(filePath => map.addDir(filePath));
+    } catch (err) {
+        throwError(err.message)
+    }
 };
 
 function cd(absolutePath) {
-    let pathArray = absolutePath.split("/").filter((e) => e !== "");
     try {
-        pathArray.length === 1 && pathArray[0] === "~"
-            ? map.updatePathAndCurrentDir(map)
-            : map.changeDir(pathArray, map.currentDir, absolutePath, true)
+        map.changeDir(absolutePath[0])
     } catch (err) {
         throwError(err.message);
     }
@@ -106,6 +105,10 @@ function cd(absolutePath) {
 function pwd() {
     createResultLine(map.currentPath)
 };
+
+function mv(sourceAndPath) {
+    map.move(sourceAndPath);
+}
 
 // Helper Functions
 
@@ -151,7 +154,7 @@ function throwError(string) {
 
 function commandFound(command, arg) {
   commandMap[command].execute(arg);
-}
+};
 
 function executeCommand() {
   // Remove cursor from current line
@@ -159,7 +162,7 @@ function executeCommand() {
   let pointer = document.querySelector("li:last-child .pointer");
   currentLine.removeChild(pointer);
   // Execute Commmand
-  let [func, arg] = command.split(" ");
+  let [func, ...arg] = command.split(" ");
   commandHistory.push(command);
   commandMap[func]
     ? commandFound(func, arg)
@@ -178,5 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (code === "Enter") executeCommand();
     if (code === "Backspace") appendCommand("backspace");
     if (key.match(/\W|_|[0-9]|[[a-zA-Z]/) && key.length === 1) appendCommand(key);
+
+    // if (code === "ArrowUp") executeCommand
   });
 });

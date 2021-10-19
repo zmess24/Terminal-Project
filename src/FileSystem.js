@@ -1,3 +1,5 @@
+import { File } from "./File";
+
 class FileSystem {
     constructor() {
         this.content = [];
@@ -5,28 +7,29 @@ class FileSystem {
         this.currentPath = "~";
         this.absolutePath = "~";
         this.currentDir = this;
-    };  
-
-    handleError(message) {
+    };
+    
+    // Helper Methods
+    handleError = (message) => {
         throw new Error(message)
     }
 
-    add(file) {
-        if (this.currentPath === "~") {
-            this.content.push(file);
-        } else {
-            this.currentDir.addDir(file);
-        }
+    addDir(filePath) {
+        let pathArray = filePath.split("/").filter((e) => e !== "");
+        let fileName = pathArray.pop();
+        let dir = pathArray.length === 0 ? this.currentDir : this.findDir(pathArray, this.currentDir, filePath);
+        let newFile = new File(fileName, dir, `${dir.absolutePath}/${fileName}`, true);
+        dir.name === "~" ? this.content.push(newFile) : dir.addDir(newFile);
     };
 
     updatePathAndCurrentDir(dir) {
         this.currentDir = dir;
-        this.currentPath = dir.name === "~" ? "~" : `${dir.absolutePath}/${dir.name}`;
+        this.currentPath = dir.name === "~" ? "~" : `${this.currentDir.absolutePath}`;
     }
 
-    changeDir(pathArray, currentDir, absolutePath) {
+    findDir(pathArray, currentDir, absolutePath) {
         currentDir = currentDir ? currentDir : this.currentDir;
-        
+
         if (pathArray[0] === "~") {
             currentDir = this;
         } else if (pathArray[0] === "..") {
@@ -39,7 +42,21 @@ class FileSystem {
         };
 
         pathArray.shift();
-        return pathArray.length > 0 ? this.changeDir(pathArray, currentDir, absolutePath) : this.updatePathAndCurrentDir(currentDir);
+        return pathArray.length > 0 ? this.findDir(pathArray, currentDir, absolutePath) : currentDir;
+    }
+
+    changeDir(absolutePath) {
+        let pathArray = absolutePath.split("/").filter((e) => e !== "");
+        let dir = pathArray.length === 1 && pathArray[0] === "~"
+            ? this 
+            : this.findDir(pathArray, this.currentDir, absolutePath);
+
+        this.updatePathAndCurrentDir(dir);
+    }
+
+    move(sourceAndPath) {
+        let [source, path] = sourceAndPath;
+        debugger;
     }
 }
 
