@@ -38,7 +38,7 @@ const commandMap = {
   },
   rm: {
     desc: "Removes file from a directory",
-    execute: rm
+    execute: rm,
   },
   cp: {
     desc: "Copies file a directory",
@@ -105,7 +105,7 @@ function cd(absolutePath) {
 
 function rm(absolutePath) {
     try {
-
+        map.removeDir(absolutePath[0])
     } catch (err) {
         throwError(err.message);
     }

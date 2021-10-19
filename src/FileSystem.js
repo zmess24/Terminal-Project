@@ -22,8 +22,14 @@ class FileSystem {
         dir.name === "~" ? this.content.push(newFile) : dir.addDir(newFile);
     };
 
-    removeDir() {
-        console.log('Removing')
+    removeDir(filePath) {
+        let pathArray = filePath.split("/").filter((e) => e !== "");
+        let dir = pathArray.length === 1 && pathArray[0] === "~"
+            ? this.handleError(`rm ${filePath}: Cannot delete file system`)
+            : this.findDir(pathArray, this.currentDir, filePath);
+        
+        dir.parentDirectory.content = dir.parentDirectory.content.filter(f => f.name !== dir.name)
+        debugger;
     }
 
     updatePathAndCurrentDir(dir) {
