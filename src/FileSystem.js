@@ -22,6 +22,10 @@ class FileSystem {
         dir.name === "~" ? this.content.push(newFile) : dir.addDir(newFile);
     };
 
+    removeDir() {
+        console.log('Removing')
+    }
+
     updatePathAndCurrentDir(dir) {
         this.currentDir = dir;
         this.currentPath = dir.name === "~" ? "~" : `${this.currentDir.absolutePath}`;

@@ -38,6 +38,7 @@ const commandMap = {
   },
   rm: {
     desc: "Removes file from a directory",
+    execute: rm
   },
   cp: {
     desc: "Copies file a directory",
@@ -101,6 +102,14 @@ function cd(absolutePath) {
         throwError(err.message);
     }
 };
+
+function rm(absolutePath) {
+    try {
+
+    } catch (err) {
+        throwError(err.message);
+    }
+}
 
 function pwd() {
     createResultLine(map.currentPath)
