@@ -8,6 +8,7 @@ let command = "",
 
 const map = new FileSystem();
 map.addDir("~/Zac");
+map.addDir("~/Desktop");
 map.addDir("/.bash_profile");
 console.log(map.directory);
 
@@ -46,6 +47,7 @@ const commandMap = {
   },
   mv: {
     desc: "Moves file into a directory",
+	execute: mv
   },
   pwd: {
     desc: "Print working directory",
@@ -116,16 +118,20 @@ function pwd() {
     createResultLine(map.currentPath)
 };
 
-function cp(paths) {
+function cp(sourceAndDest) {
 	try {
-		map.copyDir(paths[0], paths[1])
+		map.copyDir(sourceAndDest[0], sourceAndDest[1])
 	} catch (err) {
 		throwError(err.message);
 	}
 }
 
-function mv(sourceAndPath) {
-    map.move(sourceAndPath);
+function mv(sourceAndDest) {
+    try {
+		map.moveDir(sourceAndDest[0], sourceAndDest[1]);
+	} catch (err) {
+		throwError(err.message);
+	}
 }
 
 // Helper Functions

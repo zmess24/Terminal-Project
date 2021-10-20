@@ -45,7 +45,10 @@ class FileSystem {
             this.addDir(`${dest}/${sourceDir.name}`);
         }
     }
-
+    
+    moveDir(source, dest) {
+        console.log(source, dest)
+    }
     updatePathAndCurrentDir(dir) {
         this.currentDir = dir;
         this.currentPath = dir.name === "~" ? "~" : `${this.currentDir.absolutePath}`;
@@ -76,11 +79,6 @@ class FileSystem {
             : this.findDir(pathArray, this.currentDir, absolutePath);
 
         this.updatePathAndCurrentDir(dir);
-    }
-
-    move(sourceAndPath) {
-        let [source, path] = sourceAndPath;
-        debugger;
     }
 }
 
