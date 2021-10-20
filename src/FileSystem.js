@@ -68,6 +68,8 @@ class FileSystem {
 
         if (pathArray[0] === "~") {
             currentDir = this;
+        } else if (pathArray[0] === ".") {
+            currentDir = this.currentDir
         } else if (pathArray[0] === "..") {
             currentDir.parentDirectory && currentDir.name !== "~"
                 ? currentDir = currentDir.parentDirectory
