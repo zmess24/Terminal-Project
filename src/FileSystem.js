@@ -29,7 +29,21 @@ class FileSystem {
             : this.findDir(pathArray, this.currentDir, filePath);
         
         dir.parentDirectory.content = dir.parentDirectory.content.filter(f => f.name !== dir.name)
-        debugger;
+    }
+
+    copyDir(source, dest) {
+        let sourceArray = source.split("/").filter((e) => e !== "");
+        let destArray = dest.split("/").filter((e) => e !== "");
+        let sourceDir = sourceArray.length === 0 ? this.currentDir : this.findDir(sourceArray, this.currentDir, source);
+        let destDir = destArray.length === 0 ? this.currentDir : this.findDir(destArray, this.currentDir, dest);
+        let found = destDir.content.find(f => f.name === sourceDir.name);
+        if (found) { 
+            this.handleError(`cp ${source} is a directory (not copied).`);
+        } else if (destDir.absolutePath === sourceDir.absolutePath) {
+            this.handleError(`cp ${source}: Cannot copy directory into itself (not copied).`);
+        } else {
+            this.addDir(`${dest}/${sourceDir.name}`);
+        }
     }
 
     updatePathAndCurrentDir(dir) {

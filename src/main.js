@@ -42,6 +42,7 @@ const commandMap = {
   },
   cp: {
     desc: "Copies file a directory",
+    execute: cp
   },
   mv: {
     desc: "Moves file into a directory",
@@ -114,6 +115,14 @@ function rm(absolutePath) {
 function pwd() {
     createResultLine(map.currentPath)
 };
+
+function cp(paths) {
+	try {
+		map.copyDir(paths[0], paths[1])
+	} catch (err) {
+		throwError(err.message);
+	}
+}
 
 function mv(sourceAndPath) {
     map.move(sourceAndPath);
