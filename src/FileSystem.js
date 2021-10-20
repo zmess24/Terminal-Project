@@ -47,7 +47,16 @@ class FileSystem {
     }
     
     moveDir(source, dest) {
-        console.log(source, dest)
+        let sourceArray = source.split("/").filter((e) => e !== "");
+        let destArray = dest.split("/").filter((e) => e !== "");
+        let sourceDir = sourceArray.length === 0 ? this.currentDir : this.findDir(sourceArray, this.currentDir, source);
+        let destDir = destArray.length === 0 ? this.currentDir : this.findDir(destArray, this.currentDir, dest);
+        if (destDir.absolutePath === sourceDir.absolutePath) { 
+            this.handleError(`mv ${source}: Cannot move directory into itself (not moved).`);
+        } else {
+            this.removeDir(source);
+            this.addDir(`${dest}/${sourceDir.name}`);
+        }
     }
     updatePathAndCurrentDir(dir) {
         this.currentDir = dir;
