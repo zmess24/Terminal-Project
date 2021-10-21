@@ -6,7 +6,8 @@
   "author": "",
   "scripts": {
     "build": "webpack --config webpack.config.js",
-    "build:dev": "webpack --config webpack.config.js --watch"
+    "build:dev": "webpack --config webpack.config.js --watch",
+    "deploy" : "surge --domain zdm-terminal.surge.sh"
   },
   "license": "ISC",
   "devDependencies": {
