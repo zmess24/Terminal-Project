@@ -16,30 +16,20 @@ ul {
 }
 
 li {
-    position: relative;
-    /* background-color: black; */
-}
-
-.pointer {
-    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    white-space: pre-wrap;
 }
 
 .currentPath {
-    display: inline-block;
     color: yellow;
-}
-
-.command {
-    display: inline-block;
 }
 
 .pointer {
     background-color: white;
     height: 1rem;
     width: 5px;
-    position: absolute;
     bottom: 0;
-    display: inline-block;
     animation: blink 0.7s linear infinite;
 }
 

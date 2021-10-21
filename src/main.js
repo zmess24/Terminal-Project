@@ -167,8 +167,9 @@ function createTableRow(colOne, colTwo, width = null) {
 
 function appendCommand(key) {
   let currentLine = document.querySelector("li:last-child .command");
+  debugger;
   command = key === "backspace" ? command.slice(0, command.length - 1) : command + key;
-  currentLine.textContent = command;
+  currentLine.innerText = command;
 }
 
 function throwError(string) {
