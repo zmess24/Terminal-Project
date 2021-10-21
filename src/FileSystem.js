@@ -63,12 +63,12 @@ class FileSystem {
         this.currentPath = dir.name === "~" ? "~" : `${this.currentDir.absolutePath}`;
     }
 
-    findDir(pathArray, currentDir, absolutePath) {
+    findDir(pathArray, currentDir, absolutePath, init=true) {
         currentDir = currentDir ? currentDir : this.currentDir;
 
-        if (pathArray[0] === "~") {
+        if (pathArray[0] === "~" && init === true) {
             currentDir = this;
-        } else if (pathArray[0] === ".") {
+        } else if (pathArray[0] === "." && init === true) {
             currentDir = this.currentDir
         } else if (pathArray[0] === "..") {
             currentDir.parentDirectory && currentDir.name !== "~"
@@ -80,7 +80,7 @@ class FileSystem {
         };
 
         pathArray.shift();
-        return pathArray.length > 0 ? this.findDir(pathArray, currentDir, absolutePath) : currentDir;
+        return pathArray.length > 0 ? this.findDir(pathArray, currentDir, absolutePath, false) : currentDir;
     }
 
     changeDir(absolutePath) {
